@@ -1,19 +1,70 @@
-import sys  # sys нужен для передачи argv в QApplication
+import sys
 from PyQt5 import QtWidgets
-import design  # Это наш конвертированный файл дизайна
+from pathlib import Path
+from PyQt5.QtCore import QFile, QTextStream
+from PyQt5.QtWidgets import QFileDialog
+import design
+from PyQt5.QtGui import QFont
+from PyQt5.QtCore import QTextCodec
+import syntax
+
 
 class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
+
     def __init__(self):
-        # Это здесь нужно для доступа к переменным, методам
-        # и т.д. в файле design.py
+
         super().__init__()
-        self.setupUi(self)  # Это нужно для инициализации нашего дизайна
+
+        self.setupUi(self)
+        self.action.triggered.connect(self.save_file)
+        self.action_2.triggered.connect(self.open_file)
+        self.action_3.triggered.connect(self.examples)
+
+        highlighter = syntax.GoSyntaxHighlighter(self.textEdit)
+        codec = QTextCodec.codecForName("Windows-1251")
+
+        QTextCodec.setCodecForLocale(codec)
+
+
+    def new_file(self):
+        self.textEdit.clear()
+    def open_file(self):
+        file, _ = QFileDialog.getOpenFileName(self, self.tr("Open File"), "",
+                                                       "Go Files (*.go)")
+
+        if file:
+            in_file = QFile(file)
+            if in_file.open(QFile.ReadOnly | QFile.Text):
+                stream = QTextStream(in_file)
+                self.textEdit.setPlainText(stream.readAll())
+
+    def save_file(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getSaveFileName(self, "Save File", "", "Go Files (*.go);",
+                                                  options=options)
+        if fileName:
+            with open(fileName, 'w') as file:
+                file.write(self.textEdit.toPlainText())
+
+    def examples(self):
+
+        file, _ = QFileDialog.getOpenFileName(self, self.tr("Open File"), "examples",
+                                              "Go Files (*.go)")
+
+        if file:
+            in_file = QFile(file)
+            if in_file.open(QFile.ReadOnly | QFile.Text):
+                stream = QTextStream(in_file)
+                self.textEdit.setPlainText(stream.readAll())
 
 def main():
-    app = QtWidgets.QApplication(sys.argv)  # Новый экземпляр QApplication
-    window = ExampleApp()  # Создаём объект класса ExampleApp
-    window.show()  # Показываем окно
-    app.exec_()  # и запускаем приложение
 
-if __name__ == '__main__':  # Если мы запускаем файл напрямую, а не импортируем
-    main()  # то запускаем функцию main()
+    app = QtWidgets.QApplication(sys.argv)
+    window = ExampleApp()
+    window.show()
+    app.exec_()
+
+
+if __name__ == '__main__':
+    main()
