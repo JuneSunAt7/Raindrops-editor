@@ -14,14 +14,14 @@ class GoSyntaxHighlighter(QSyntaxHighlighter):
 
         # Ключевые слова Golang
         keyword_format = QTextCharFormat()
-        keyword_format.setForeground(Qt.cyan)
+        keyword_format.setForeground(QColor(255, 179, 255))
         keywords = ['break', 'default', 'func', 'interface', 'select',
                     'case', 'defer', 'go', 'map', 'struct',
                     'chan', 'else', 'goto', 'package', 'switch',
                     'const', 'fallthrough', 'if', 'range', 'type',
                     'continue', 'for', 'import', 'return', 'var']
         data_format = QTextCharFormat()
-        data_format.setForeground(Qt.darkRed)
+        data_format.setForeground(QColor(255, 255, 179))
 
         datatypes = ['string', 'int', 'int64', 'bool', 'uint64',
                      'byte', 'rune', 'float32', 'float64',
@@ -29,7 +29,7 @@ class GoSyntaxHighlighter(QSyntaxHighlighter):
                      'err']
 
         text_format = QTextCharFormat()
-        text_format.setForeground(Qt.blue)
+        text_format.setForeground(QColor(153, 179, 255))
         textypes = ['Println', 'Printlf', 'Sprintf', 'Sscanf', 'Sscanln',
                      'Appendf', 'Append', 'FormatString', 'Fprint',
                      'Scan', 'Print', 'Scanln', 'Fscan',
@@ -52,17 +52,17 @@ class GoSyntaxHighlighter(QSyntaxHighlighter):
 
         # Комментарии
         comment_format = QTextCharFormat()
-        comment_format.setForeground(Qt.green)
+        comment_format.setForeground(QColor(179, 255, 179))
         self.highlighting_rules.append((QRegExp(r'//.*'), comment_format))
         # vars
 
         var_format = QTextCharFormat()
-        var_format.setForeground(Qt.magenta)
-        self.highlighting_rules.append((QRegExp(r'var*'),var_format))
+        var_format.setForeground(QColor(255, 179, 179))
+        self.highlighting_rules.append((QRegExp(r'var.*'),var_format))
 
         func_format = QTextCharFormat()
-        func_format.setForeground(Qt.yellow)
-        self.highlighting_rules.append((QRegExp(r'func*'), func_format))
+        func_format.setForeground(QColor(153, 153, 255))
+        self.highlighting_rules.append((QRegExp(r'func.*'), func_format))
 
     def highlightBlock(self, text):
         for rule in self.highlighting_rules:
