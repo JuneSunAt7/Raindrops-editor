@@ -28,6 +28,13 @@ class GoSyntaxHighlighter(QSyntaxHighlighter):
                      'uint8', 'complex64', 'type', 'nil',
                      'err']
 
+        text_format = QTextCharFormat()
+        text_format.setForeground(Qt.blue)
+        textypes = ['Println', 'Printlf', 'Sprintf', 'Sscanf', 'Sscanln',
+                     'Appendf', 'Append', 'FormatString', 'Fprint',
+                     'Scan', 'Print', 'Scanln', 'Fscan',
+                     'Sprintln']
+
         for keyword in keywords:
             pattern = QRegExp(r'\b' + keyword + r'\b')
             rule = (pattern, keyword_format)
@@ -36,6 +43,11 @@ class GoSyntaxHighlighter(QSyntaxHighlighter):
         for data in datatypes:
             pattern = QRegExp(r'\b' + data + r'\b')
             rule = (pattern, data_format)
+            self.highlighting_rules.append(rule)
+
+        for text in textypes:
+            pattern = QRegExp(r'\b' + text + r'\b')
+            rule = (pattern, text_format)
             self.highlighting_rules.append(rule)
 
         # Комментарии

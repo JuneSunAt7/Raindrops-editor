@@ -1,10 +1,8 @@
 import sys
 from PyQt5 import QtWidgets
-from pathlib import Path
 from PyQt5.QtCore import QFile, QTextStream
 from PyQt5.QtWidgets import QFileDialog
 import design
-from PyQt5.QtGui import QFont
 from PyQt5.QtCore import QTextCodec
 import syntax
 
@@ -21,9 +19,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.action_3.triggered.connect(self.examples)
 
         highlighter = syntax.GoSyntaxHighlighter(self.textEdit)
-        codec = QTextCodec.codecForName("Windows-1251")
 
-        QTextCodec.setCodecForLocale(codec)
 
 
     def new_file(self):
