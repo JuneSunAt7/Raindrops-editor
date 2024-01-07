@@ -1,13 +1,26 @@
 import sys
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import QFile, QTextStream
-from PyQt5.QtWidgets import QFileDialog
-from PyQt5.QtGui import QColor, QPalette
+
+from PyQt5.QtCore import QFile, QTextStream, QAbstractListModel, QModelIndex, Qt
+from PyQt5.QtWidgets import QFileDialog, QMainWindow, QTextEdit, QWidget, QVBoxLayout
 import design
-from PyQt5.QtCore import QTextCodec
 import syntax
 import subprocess
 
+
+class LineNumberModel(QAbstractListModel):
+    def __init__(self, parent=None):
+        super(LineNumberModel, self).__init__(parent)
+        self.lines = []
+
+    def rowCount(self, parent=QModelIndex()):
+        return len(self.lines)
+
+    def data(self, index, role=Qt.DisplayRole):
+        if role == Qt.DisplayRole:
+            if index.isValid() and 0 <= index.row() < len(self.lines):
+                return str(self.lines[index.row()])
+        return None
 
 class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
 
@@ -20,6 +33,7 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.action_2.triggered.connect(self.open_file)
         self.action_3.triggered.connect(self.examples)
         self.action_4.triggered.connect(self.run_script)
+
 
         highlighter = syntax.GoSyntaxHighlighter(self.textEdit)
         self.file_path = None
@@ -76,15 +90,20 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
 
         if error:
             print(error)
-            palette = QPalette()
-            palette.setColor(QPalette.Text, QColor(255, 179, 179))
-            self.lineEdit.setPalette(palette)
+
+            self.lineEdit.setStyleSheet("background-color: rgb(38, 38, 38);\n"
+"color:rgb(255, 179, 179);\n"
+"\n"
+"border-radius:10px;")
             self.lineEdit.setText(error.decode())
         else:
-            palette = QPalette()
-            palette.setColor(QPalette.Text, QColor(179, 255, 179))
-            self.lineEdit.setPalette(palette)
+
+            self.lineEdit.setStyleSheet("background-color: rgb(38, 38, 38);\n"
+"color:rgb(179, 255, 179);\n"
+"\n"
+"border-radius:10px;")
             self.lineEdit.setText("Успешная сборка плагина!\n"+output.decode('cp866'))
+
 
 
 def main():

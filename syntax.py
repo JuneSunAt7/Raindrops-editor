@@ -1,9 +1,9 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTextEdit
 
 from PyQt5.QtGui import QTextCharFormat, QColor, QFont, QSyntaxHighlighter
-from PyQt5.QtCore import Qt, QRegExp
+from PyQt5.QtCore import  QRegExp
 
-import sys
+
 
 
 class GoSyntaxHighlighter(QSyntaxHighlighter):
