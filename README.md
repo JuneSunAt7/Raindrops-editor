@@ -4,4 +4,4 @@
 
 Язык Go имеет возможность встроить код плагина в действующий код.</h2>
 
-<img src="https://github.com/JuneSunAt7/Raindrops-editor/assets/63651740/3bbc7a6f-48a0-4a56-969d-473878091c8d"/>
+<img src="https://github.com/JuneSunAt7/Raindrops-editor/assets/63651740/1c3482b8-10bf-4d99-93b6-9e7dc8798fad"/>
