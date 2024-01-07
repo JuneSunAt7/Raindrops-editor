@@ -35,6 +35,7 @@ class GoSyntaxHighlighter(QSyntaxHighlighter):
                      'Scan', 'Print', 'Scanln', 'Fscan',
                      'Sprintln']
 
+
         for keyword in keywords:
             pattern = QRegExp(r'\b' + keyword + r'\b')
             rule = (pattern, keyword_format)
@@ -50,6 +51,8 @@ class GoSyntaxHighlighter(QSyntaxHighlighter):
             rule = (pattern, text_format)
             self.highlighting_rules.append(rule)
 
+
+
         # Комментарии
         comment_format = QTextCharFormat()
         comment_format.setForeground(QColor(179, 255, 179))
@@ -58,11 +61,13 @@ class GoSyntaxHighlighter(QSyntaxHighlighter):
 
         var_format = QTextCharFormat()
         var_format.setForeground(QColor(255, 179, 179))
-        self.highlighting_rules.append((QRegExp(r'var.*'),var_format))
+        self.highlighting_rules.append((QRegExp(r'var.*\s'),var_format))
 
         func_format = QTextCharFormat()
         func_format.setForeground(QColor(153, 153, 255))
-        self.highlighting_rules.append((QRegExp(r'func.*'), func_format))
+        self.highlighting_rules.append((QRegExp(r'func.*\s'), func_format))
+
+
 
     def highlightBlock(self, text):
         for rule in self.highlighting_rules:

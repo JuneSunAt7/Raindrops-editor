@@ -2,12 +2,12 @@ import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QFile, QTextStream
 from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtGui import QColor, QPalette
 import design
 from PyQt5.QtCore import QTextCodec
 import syntax
 import subprocess
 
-path = ""
 
 class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
 
@@ -22,40 +22,40 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.action_4.triggered.connect(self.run_script)
 
         highlighter = syntax.GoSyntaxHighlighter(self.textEdit)
-
+        self.file_path = None
 
 
     def new_file(self):
+        self.save_file()
         self.textEdit.clear()
     def open_file(self):
         file, _ = QFileDialog.getOpenFileName(self, self.tr("Open File"), "",
                                                        "Go Files (*.go)")
-        path = file
-        path = path.replace("/","\\")
-        print(path)
+
+        self.file_path = file.replace("/","\\")
+
         if file:
             in_file = QFile(file)
             if in_file.open(QFile.ReadOnly | QFile.Text):
                 stream = QTextStream(in_file)
+                stream.setCodec("UTF-8")
                 self.textEdit.setPlainText(stream.readAll())
 
     def save_file(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
+
+
         fileName, _ = QFileDialog.getSaveFileName(self, "Save File", "", "Go Files (*.go);",
-                                                  options=options)
-        path = fileName
-        path = path.replace("/", "\\")
+                                                  )
+        self.file_path = fileName.replace("/", "\\")
         if fileName:
-            with open(fileName, 'w') as file:
+            with open(fileName, 'w', encoding="utf-8") as file:
                 file.write(self.textEdit.toPlainText())
 
     def examples(self):
 
         file, _ = QFileDialog.getOpenFileName(self, self.tr("Open File"), "examples",
                                               "Go Files (*.go)")
-        path = file
-        path = path.replace("/", "\\")
+        self.file_path = file.replace("/","\\")
         if file:
             in_file = QFile(file)
             if in_file.open(QFile.ReadOnly | QFile.Text):
@@ -64,7 +64,8 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
 
 
     def run_script(self):
-        command = "go run D:/programming/go/netMg/netMg/cmd/server.go"
+        self.save_file()
+        command = "go build " + self.file_path
         print(command)
 
         process = subprocess.Popen(
@@ -74,9 +75,15 @@ class ExampleApp(QtWidgets.QMainWindow, design.Ui_MainWindow):
         output, error = process.communicate()
 
         if error:
-            print(output.decode('cp866'))
-            self.lineEdit.setText("Ошибка сборки плагина")
+            print(error)
+            palette = QPalette()
+            palette.setColor(QPalette.Text, QColor(255, 179, 179))
+            self.lineEdit.setPalette(palette)
+            self.lineEdit.setText(error.decode())
         else:
+            palette = QPalette()
+            palette.setColor(QPalette.Text, QColor(179, 255, 179))
+            self.lineEdit.setPalette(palette)
             self.lineEdit.setText("Успешная сборка плагина!\n"+output.decode('cp866'))
 
 

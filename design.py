@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
         self.textEdit = QtWidgets.QTextEdit(self.centralwidget)
         font = QtGui.QFont()
         font.setFamily("STXihei")
-        font.setPointSize(14)
+        font.setPointSize(12)
         font.setBold(False)
         font.setItalic(False)
         font.setWeight(9)
@@ -38,7 +38,7 @@ class Ui_MainWindow(object):
         self.verticalLayout.addWidget(self.textEdit)
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
         font = QtGui.QFont()
-        font.setPointSize(30)
+        font.setPointSize(12)
         self.lineEdit.setFont(font)
         self.lineEdit.setStyleSheet("background-color: rgb(38, 38, 38);\n"
 "color: rgb(255, 255, 255);\n"
