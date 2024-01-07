@@ -1,2 +1,7 @@
-wohoooo!
-song2 by blur
+package examples
+import(
+  "fmt"
+  )
+func main(){
+  fmt.Println("the simple example")
+  }
